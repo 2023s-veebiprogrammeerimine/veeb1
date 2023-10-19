@@ -1,10 +1,24 @@
 const express = require('express');
-const timeInfo = require('./datetime_fnc');
 const fs = require("fs");
 const app = express();
+const mysql = require('mysql2');
+const timeInfo = require('./datetime_fnc');
+const bodyparser = require('body-parser');
+const dbInfo = require('../../../vp23config');
+//Kuna Rinde kasutab ajutiselt Inga andmebaasi, siis:
+const dataBase = 'if23_inga_pe_DM';
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
+app.use(bodyparser.urlencoded({extended: false}));
+
+//loon andmebaasiühenduse
+const conn = mysql.createConnection({
+	host: dbInfo.configData.host,
+	user: dbInfo.configData.user,
+	password: dbInfo.configData.password,
+	database: dataBase
+});
 
 app.get('/', (req, res)=>{
 	//res.send('See töötab!');
@@ -31,5 +45,48 @@ app.get('/wisdom', (req, res)=>{
 		}
 	});
 });
+
+app.get('/eestifilm', (req, res)=>{
+	res.render('filmindex');
+});
+
+app.get('/eestifilm/filmiloend', (req, res)=>{
+	let sql = 'SELECT title, production_year FROM movie';
+	let sqlResult = [];
+	conn.query(sql, (err, result)=>{
+		if (err){
+			res.render('filmlist', {filmlist: sqlResult});
+			//conn.end();
+			throw err;
+		}
+		else {
+			//console.log(result);
+			res.render('filmlist', {filmlist: result});
+			//conn.end();
+		}
+	});
+});
+
+app.get('/eestifilm/addfilmperson', (req, res)=>{
+	res.render('addfilmperson');
+});	
+
+app.post('/eestifilm/addfilmperson', (req, res)=>{
+	//res.render('addfilmperson');
+	//res.send(req.body);
+	let notice = '';
+	let sql = 'INSERT INTO person (first_name, last_name, birth_date) VALUES(?,?,?)';
+	conn.query(sql, [req.body.firstNameInput, req.body.lastNameInput, req.body.birthDateInput], (err, result)=>{
+		if (err) {
+			notice = 'Andmete salvestamine ebaõnnestus!';
+			res.render('addfilmperson', {notice: notice});
+			throw err;
+		}
+		else {
+			notice = req.body.firstNameInput + ' ' + req.body.lastNameInput + ' salvestamine õnnestus!';
+			res.render('addfilmperson', {notice: notice});
+		}
+	});
+});	
 
 app.listen(5100);
