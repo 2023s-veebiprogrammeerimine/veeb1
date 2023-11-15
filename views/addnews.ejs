@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Andrus Rinde, veebiprogrammeerimine 2023</title>
+</head>
+<body>
+	<img src="/banner/banner.png" alt="Veebiprogrammeerimise kursuse bänner">
+	<h1>Uudised</h1>
+	<ul>
+		<li><a href="/news">Uudiste avaleht</a></li>
+		<li><a href="/">Avalehele</a></li>
+	</ul>
+	<hr>
+	<h2>Lisa uudis</h2>
+	<form method="POST">
+		<label for="titleInput">Uudise pealkiri</label>
+		<input type="text" name="titleInput" id="titleInput" placeholder="Uudise pealkiri ..." required>
+		<br>
+		<label for="contentInput">Uudise sisu</label>
+		<br>
+		<textarea id="contentInput" name="contentInput" placeholder="Uudise sisu ..." required rows="5" cols="80" maxlength="2000"></textarea>
+		<br>
+		<label for="expireInput">Uudise aegumiskuupäev</label>
+		<input type="date" name="expireInput" id="expireInput" required>
+		<br>
+		<input type="submit" name="newsSubmit" value="Salvesta">
+	</form>
+	<p><%= locals.notice || 'Ootel!' %></p>
+</body>
+</html>

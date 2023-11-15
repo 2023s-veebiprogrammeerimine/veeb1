@@ -71,6 +71,30 @@ app.get('/eestifilm/addfilmperson', (req, res)=>{
 	res.render('addfilmperson');
 });	
 
+app.get('/news', (req, res)=> {
+	res.render('news');
+});
+
+app.get('/news/add', (req, res)=> {
+	res.render('addnews');
+});
+
+app.get('/news/read', (req, res)=> {
+	res.render('readnews');
+});
+
+app.get('/news/read/:id', (req, res)=> {
+	//res.render('readnews');
+	res.send('Tahame uudist, mille id on: ' + req.params.id);
+});
+
+app.get('/news/read/:id/:lang', (req, res)=> {
+	//res.render('readnews');
+	console.log(req.params);
+	console.log(req.query);
+	res.send('Tahame uudist, mille id on: ' + req.params.id);
+});
+
 app.post('/eestifilm/addfilmperson', (req, res)=>{
 	//res.render('addfilmperson');
 	//res.send(req.body);
