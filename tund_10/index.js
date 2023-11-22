@@ -141,7 +141,7 @@ app.post('/photoupload', upload.single('photoInput'), (req, res)=>{
 	//foto andmed andmetabelisse
 	let sql = 'INSERT INTO vpgallery (filename, originalname, alttext, privacy, userid) VALUES(?,?,?,?,?)';
 	const userid = 1;
-	conn.execute(sql, [fileName, req.file.originalname, req.body.altInput, req.body.privacyInput, userid], (err, result)=>{
+	conn.query(sql, [fileName, req.file.originalname, req.body.altInput, req.body.privacyInput, userid], (err, result)=>{
 		if(err) {
 			throw err;
 			notice = 'Foto andmete salvestamine ebaõnnestus!';
@@ -154,19 +154,10 @@ app.post('/photoupload', upload.single('photoInput'), (req, res)=>{
 });
 
 app.get('/photogallery', (req, res)=> {
-	let photoList = [];
-	let sql = 'SELECT id,filename,alttext FROM vpgallery WHERE privacy > 1 AND deleted IS NULL ORDER BY id DESC';
-	conn.execute(sql, (err,result)=>{
-		if (err){
-			throw err;
-			res.render('photogallery', {photoList : photoList});
-		}
-		else {
-			photoList = result;
-			console.log(result);
-			res.render('photogallery', {photoList : photoList});
-		}
-	});
+	
+	//andmebaasist tuleb lugeda piltide id, filename, alttext
+	
+	res.render('photogallery');
 });
 
 app.listen(5100);

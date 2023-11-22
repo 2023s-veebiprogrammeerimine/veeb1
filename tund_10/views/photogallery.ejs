@@ -12,19 +12,16 @@
 		<li><a href="/">Avalehele</a></li>
 	</ul>
 	<hr>
-	<h2>Galerii</h2>
+	<h2>Falerii</h2>
 	<div class="gallery">
+	
+	
 		<!--Järgneb korduv osa, iga pisipildi jaoks oma-->
-		<!--<div class="thumbgallery">
+		<div class="thumbgallery">
 			<img src="gallery/thumbs/vp_1700145755260.jpg" alt="Karu lilledega" data-filename="vp_1700145755260.jpg" data-id="1" class="thumbs">
 			<p></p> 
-		</div>-->
-		<% photoList.forEach(function(photo){ %>
-			<div class="thumbgallery">
-				<img src="gallery/thumbs/<%=photo.filename%>" alt="<%if(photo.alttext != ''){%><%=photo.alttext%><%}else{%>Galeriipilt<%}%>" data-filename="<%=photo.filename%>" data-id="<%=photo.id%>" class="thumbs">
-				<p></p>
-			</div>
-		<% }); %>
+		</div>
+	
 	
 	</div>
 </body>
