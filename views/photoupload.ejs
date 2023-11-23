@@ -3,6 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<title>Andrus Rinde, veebiprogrammeerimine 2023</title>
+	<script src="/script/check.js" defer></script>
 </head>
 <body>
 	<img src="/banner/banner.png" alt="Veebiprogrammeerimise kursuse bänner">
@@ -28,7 +29,8 @@
 		<input type="radio" id="privasyInput3" name="privacyInput" value="3">
 		<label for="privasyInput3">Avalik (kõik näevad)</label>
 		<br>
-		<input type="submit" name="photoSubmit" value="Lae üles">
+		<input type="submit" name="photoSubmit" id="photoSubmit" value="Lae üles">
+		<span id="checkInfo"></span>
 	</form>
 	<p><%= locals.notice || 'Ootel!' %></p>
 </body>

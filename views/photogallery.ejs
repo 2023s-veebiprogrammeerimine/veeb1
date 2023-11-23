@@ -4,6 +4,8 @@
 	<meta charset="utf-8">
 	<title>Andrus Rinde, veebiprogrammeerimine 2023</title>
 	<link rel="stylesheet" href="/style/gallery.css">
+	<link rel="stylesheet" href="/style/modal.css">
+	<script src="/script/gallery.js" defer></script>
 </head>
 <body>
 	<img src="/banner/banner.png" alt="veebiprogrammeerimise kursuse banner">
@@ -12,6 +14,17 @@
 		<li><a href="/">Avalehele</a></li>
 	</ul>
 	<hr>
+	
+	<dialog id="modal" class="modalarea">
+		<span id="modalClose" class="modalclose">&times;</span>
+		<div class="modalhorizontal">
+			<div class="modalvertical">
+				<p id="modalCaption"></p>
+				<img id="modalImage" src="/pics/empty.png" alt="Galeriipilt">
+			</div>
+		</div>
+	</dialog>
+	
 	<h2>Galerii</h2>
 	<div class="gallery">
 		<!--Järgneb korduv osa, iga pisipildi jaoks oma-->
