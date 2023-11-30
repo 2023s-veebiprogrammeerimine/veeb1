@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Andrus Rinde, veebiprogrammeerimine 2023</title>
+</head>
+<body>
+	<img src="/banner/banner.png" alt="Veebiprogrammeerimise kursuse bänner">
+	<h1>Eesti film</h1>
+	<ul>
+		<li><a href="/eestifilm">Eesti filmide avaleht</a></li>
+		<li><a href="/">Avalehele</a></li>
+	</ul>
+	<hr>
+	<h2>Lisa filmitegelane</h2>
+	<form method="POST">
+		<label for="firstNameInput">Filmitegelase eesnimi</label>
+		<input type="text" name="firstNameInput" id="firstNameInput" placeholder="Eesnimi" required>
+		<br>
+		<label for="lastNameInput">Filmitegelase perekonnanimi</label>
+		<input type="text" name="lastNameInput" id="lastNameInput" placeholder="Perekonnanimi" required>
+		<br>
+		<label for="birthDateInput">Filmitegelase sünnikuupäev</label>
+		<input type="date" name="birthDateInput" id="birthDateInput" required>
+		<br>
+		<input type="submit" name="personSubmit" value="Salvesta">
+	</form>
+	<p><%= locals.notice || 'Ootel!' %></p>
+</body>
+</html>

@@ -14,13 +14,6 @@ const multer = require('multer');
 const upload = multer({dest: './public/gallery/orig/'});
 const sharp = require('sharp');
 const async = require('async');
-//paroolide krüpteerimiseks
-const bcrypt = require('bcrypt');
-//sessiooni jaoks
-const session = require('express-session');
-
-app.use(session({secret: 'minuAbsoluutseltSalajaneVõti', saveUninitialized: true, resave: true}));
-let mySession;
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
@@ -43,108 +36,9 @@ const conn2 = mysql.createConnection({
 });
 
 app.get('/', (req, res)=>{
-	let notice = 'Sisesta oma kasutajakonto andmed!';
 	//res.send('See töötab!');
 	//res.download('index.js');
-	res.render('index', {notice: notice});
-});
-
-app.post('/', (req, res)=>{
-	let notice = 'Sisesta oma kasutajakonto andmed!';
-	if(!req.body.emailInput || !req.body.passwordInput){
-		console.log('Paha');
-		res.render('index', {notice: notice});
-	}
-	else {
-		console.log('Hea');
-		let sql = 'SELECT password FROM vpusers WHERE email = ?';
-		conn.execute(sql, [req.body.emailInput], (err, result)=>{
-			if(err) {
-				notice = 'Tehnilise vea tõttu ei saa sisse logida!';
-				console.log(notice);
-				res.render('index', {notice: notice});
-			}
-			else {
-				//console.log(result);
-				if(result[0] != null){
-					console.log(result[0].password);
-					bcrypt.compare(req.body.passwordInput, result[0].password, (err, compareresult)=>{
-						if(err){
-								throw err;
-						}
-						else {
-							if(compareresult){
-								mySession = req.session;
-								mySession.userName = req.body.emailInput;
-								
-								notice = mySession.userName + ' on sisse loginud!';
-								console.log(notice);
-								
-								res.render('index', {notice: notice});
-							}
-							else {
-								notice = 'Kasutajatunnus või parool oli vigane!';
-								console.log(notice);
-								res.render('index', {notice: notice});
-							}
-						}
-					});
-				
-				}
-				else {
-					notice = 'Kasutajatunnus või parool oli vigane!';
-					console.log(notice);
-					res.render('index', {notice: notice});
-				}
-				
-			}
-		});
-		//res.render('index', {notice: notice});
-	}
-});
-
-app.get('/logout', (req, res)=>{
-	req.session.destroy();
-	mySession = null;
-	console.log('Logi vlja!');
-	res.redirect('/');	
-});
-
-
-app.get('/signup', (req, res)=>{
-	res.render('signup');
-});
-
-app.post('/signup', (req, res)=>{
-	let notice = 'Ootan andmeid!';
-	console.log(req.body);
-	if(!req.body.firstNameInput || !req.body.lastNameInput || !req.body.genderInput || !req.body.birthInput || !req.body.emailInput || req.body.passwordInput.length < 8 || req.body.passwordInput !== req.body.confirmPasswordInput){
-		console.log('Andmeid on puudu või pole nad korrektsed!');
-		notice = 'Andmeid on puudu või pole nad korrektsed!';
-		res.render('signup', {notice: notice});
-	}
-	else {
-		console.log('Ok!');
-		bcrypt.genSalt(10, (err, salt)=> {
-			bcrypt.hash(req.body.passwordInput, salt, (err, pwdhash)=>{
-				let sql = 'INSERT INTO vpusers (firstname, lastname, birthdate, gender, email, password) VALUES(?,?,?,?,?,?)';
-				conn.execute(sql, [req.body.firstNameInput, req.body.lastNameInput, req.body.birthInput, req.body.genderInput, req.body.emailInput, pwdhash], (err, result)=>{
-					if(err){
-						console.log(err);
-						notice = 'Tehnilistel põhjustel kasutajat ei loodud!';
-						res.render('signup', {notice: notice});
-					}
-					else {
-						console.log('kasutaja loodud');
-						notice = 'Kasutaja ' + req.body.emailInput + ' edukalt loodud!';
-						res.render('signup', {notice: notice});
-					}
-				});
-			});
-		});
-	}
-	
-	//res.render('signup');
+	res.render('index');
 });
 
 app.get('/timenow', (req, res)=>{
@@ -274,7 +168,7 @@ app.get('/news/read/:id/:lang', (req, res)=> {
 	res.send('Tahame uudist, mille id on: ' + req.params.id);
 });
 
-app.get('/photoupload', checkLogin, (req, res)=> {
+app.get('/photoupload', (req, res)=> {
 	res.render('photoupload');
 });
 
@@ -321,22 +215,5 @@ app.get('/photogallery', (req, res)=> {
 		}
 	});
 });
-
-function checkLogin(req, res, next){
-	console.log('kontrollime sisselogimist');
-	if(mySession != null){
-		if(mySession.userName){
-			console.log('Täitsa sees on!');
-			next();
-		}
-		else {
-			console.log('E ole üldse sees!');
-			res.redirect('/');
-		}
-	}
-	else {
-		res.redirect('/');
-	}
-}
 
 app.listen(5100);

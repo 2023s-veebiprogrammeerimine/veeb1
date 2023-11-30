@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Andrus Rinde, veebiprogrammeerimine 2023</title>
+	<script src="/script/check.js" defer></script>
+</head>
+<body>
+	<img src="/banner/banner.png" alt="Veebiprogrammeerimise kursuse bänner">
+	<h1>Fotode laadimine galeriisse</h1>
+	<ul>
+		<li><a href="/">Avalehele</a></li>
+	</ul>
+	<hr>
+	<h2>Foto üleslaadimine</h2>
+	<form method="POST" enctype="multipart/form-data">
+		<label for="photoInput">Vali pildifail</label>
+		<input type="file" id="photoInput" name="photoInput" required>
+		<br>
+		<label for="altInput">Foto alternatiivtekst</label>
+		<input type="text" name="altInput" id="altInput" placeholder="Foto alt tekst ...">
+		<br>
+		<input type="radio" id="privasyInput1" name="privacyInput" value="1" checked>
+		<label for="privasyInput1">Privaatne (ainult omanik näeb)</label>
+		<br>
+		<input type="radio" id="privasyInput2" name="privacyInput" value="2">
+		<label for="privasyInput2">Sisseloginud kasutajad näevad</label>
+		<br>
+		<input type="radio" id="privasyInput3" name="privacyInput" value="3">
+		<label for="privasyInput3">Avalik (kõik näevad)</label>
+		<br>
+		<input type="submit" name="photoSubmit" id="photoSubmit" value="Lae üles">
+		<span id="checkInfo"></span>
+	</form>
+	<p><%= locals.notice || 'Ootel!' %></p>
+</body>
+</html>
