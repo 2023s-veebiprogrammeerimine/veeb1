@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Andrus Rinde, veebiprogrammeerimine 2023</title>
+</head>
+<body>
+	<img src="/banner/banner.png" alt="Veebiprogrammeerimise kursuse bänner">
+	<h1>Andrus Rinde</h1>
+	<p>See veebileht on valminud <a href="https://www.tlu.ee" target="_blank">TLÜ</a> Digitehnoloogiate instituudi informaatia eriala õppetöö raames.</p>
+	<p>Olen tore ja tark ja parimais aastais meesterahvas!</p>
+	<hr>
+	<ul>
+		<li><a href="/timenow">Aeg praegu</a></li>
+		<li><a href="/wisdom">Vanasõnad</a></li>
+		<li><a href="/eestifilm">Eesti film</a></li>
+		<li><a href="/news">Uudised</a></li>
+		<li><a href="/photoupload">Fotode galeriisse laadimine</a> (ainult sisseloginud kasutajatele)</li>
+		<li><a href="/photogallery">Fotogalerii</a></li>
+	</ul>
+	<hr>
+	<h2>Kasutajakonto</h2>
+	<form method="POST">
+		<label for="emailInput">E-mail (kasutajatunnus)</label>
+		<input type="email" id="emailInput" name="emailInput" placeholder="Sinu meilieaadress ..." required>
+		<label for="passwordInput">Parool</label>
+		<input type="password" id="passwordInput" name="passwordInput" required>
+		<input type="submit" name="loginSubmit" value="Logi sisse">
+		<span><%= locals.notice%></span>
+	</form>
+	<p>Logi <a href="/logout">välja</a>!</p>
+	<p>Või loo endale <a href="/signup">kasutajakonto</a>!</p>
+	<hr>
+</body>
+</html>

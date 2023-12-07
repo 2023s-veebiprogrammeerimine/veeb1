@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Andrus Rinde, veebiprogrammeerimine 2023</title>
+</head>
+<body>
+	<img src="/banner/banner.png" alt="Veebiprogrammeerimise kursuse bänner">
+	<h1>Eesti film</h1>
+	<ul>
+		<li><a href="/eestifilm">Eesti filmide avaleht</a></li>
+		<li><a href="/">Avalehele</a></li>
+	</ul>
+	<hr>
+	<h2>Andmebaasis olevate Eesti filmide loend</h2>
+	<ol>
+		<% filmlist.forEach(function(film){ %>
+			<li><%= film.title %>, toodetud <%= film.production_year %></li>
+		<% }); %>
+	</ol>
+</body>
+</html>

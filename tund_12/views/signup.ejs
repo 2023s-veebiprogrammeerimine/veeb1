@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Andrus Rinde, veebiprogrammeerimine 2023</title>
+</head>
+<body>
+	<img src="/banner/banner.png" alt="Veebiprogrammeerimise kursuse bänner">
+	<h1>Kasutajakonto</h1>
+	<ul>
+		<li><a href="/">Avalehele</a></li>
+	</ul>
+	<hr>
+	<h2>Loo kasutajakonto</h2>
+	<form method="POST">
+		<label for="firstNameInput">Eesnimi</label>
+		<input type="text" name="firstNameInput" id="firstNameInput" placeholder="Sinu eesnimi ..." required>
+		<br>
+		<label for="lastNameInput">Perekonnanimi</label>
+		<input type="text" name="lastNameInput" id="lastNameInput" placeholder="Sinu perekonnanimi ..." required>
+		<br>
+		<input type="radio" id="genderInput1" name="genderInput" value="1" checked>
+		<label for="genderInput1">Mees</label>
+		<input type="radio" id="genderInput2" name="genderInput" value="2">
+		<label for="genderInput2">Naine</label>
+		<br>
+		<label for="birthInput">Sünnikuupäev</label>
+		<input type="date" id="birthInput" name="birthInput" required>
+		<br>
+		<label for="emailInput">E-mail (kasutajatunnus)</label>
+		<input type="email" id="emailInput" name="emailInput" placeholder="Sinu meilieaadress ..." required>
+		<br>
+		<label for="passwordInput">Parool (min 8 märki)</label>
+		<input type="password" id="passwordInput" name="passwordInput" required>
+		<br>
+		<label for="confirmPasswordInput">Korda parooli</label>
+		<input type="password" id="confirmPasswordInput" name="confirmPasswordInput" required>
+		<br>
+		<input type="submit" name="userSubmit" value="Loo kasutajakonto">
+	</form>
+	<p><%= locals.notice || 'Ootel!' %></p>
+</body>
+</html>

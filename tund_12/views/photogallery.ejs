@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Andrus Rinde, veebiprogrammeerimine 2023</title>
+	<link rel="stylesheet" href="/style/gallery.css">
+	<link rel="stylesheet" href="/style/modal.css">
+	<script src="/script/gallery.js" defer></script>
+</head>
+<body>
+	<img src="/banner/banner.png" alt="veebiprogrammeerimise kursuse banner">
+	<h1>Fotogalerii</h1>
+	<ul>
+		<li><a href="/">Avalehele</a></li>
+	</ul>
+	<hr>
+	
+	<dialog id="modal" class="modalarea">
+		<span id="modalClose" class="modalclose">&times;</span>
+		<div class="modalhorizontal">
+			<div class="modalvertical">
+				<p id="modalCaption"></p>
+				<img id="modalImage" src="/pics/empty.png" alt="Galeriipilt">
+			</div>
+		</div>
+	</dialog>
+	
+	<h2>Galerii</h2>
+	<div class="gallery">
+		<!--Järgneb korduv osa, iga pisipildi jaoks oma-->
+		<!--<div class="thumbgallery">
+			<img src="gallery/thumbs/vp_1700145755260.jpg" alt="Karu lilledega" data-filename="vp_1700145755260.jpg" data-id="1" class="thumbs">
+			<p></p> 
+		</div>-->
+		<% photoList.forEach(function(photo){ %>
+			<div class="thumbgallery">
+				<img src="gallery/thumbs/<%=photo.filename%>" alt="<%if(photo.alttext != ''){%><%=photo.alttext%><%}else{%>Galeriipilt<%}%>" data-filename="<%=photo.filename%>" data-id="<%=photo.id%>" class="thumbs">
+				<p></p>
+			</div>
+		<% }); %>
+	
+	</div>
+</body>
+</html>
