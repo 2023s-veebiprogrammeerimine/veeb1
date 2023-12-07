@@ -31,6 +31,8 @@ app.use(express.static('public'));
 //järgnev, kui ainult tekst, siis "false", kui ka muud kraami, näiteks pilti, siis "true"
 app.use(bodyparser.urlencoded({extended: true}));
 
+
+
 //loon andmebaasiühenduse
 //kui kõik db asjad pool'is, siis pole seda enam vaja
 /* const conn = mysql.createConnection({
@@ -47,6 +49,11 @@ const conn2 = mysql.createConnection({
 	database: dBase
 });
 
+//marsruudid (routes)
+
+const newsRouter = require('./routes/news');
+app.use('/news', newsRouter);
+
 app.get('/', (req, res)=>{
 	let notice = 'Sisesta oma kasutajakonto andmed!';
 	//res.send('See töötab!');
@@ -62,7 +69,7 @@ app.post('/', (req, res)=>{
 	}
 	else {
 		console.log('Hea');
-		let sql = 'SELECT password FROM vpusers WHERE email = ?';
+		let sql = 'SELECT id,password FROM vpusers WHERE email = ?';
 		//andmebaasi ühendus pool'i kaudu
 		pool.getConnection((err, conn)=>{
 			if(err){
@@ -74,6 +81,7 @@ app.post('/', (req, res)=>{
 					if(err) {
 						notice = 'Tehnilise vea tõttu ei saa sisse logida!';
 						console.log(notice);
+						conn.release();
 						res.render('index', {notice: notice});
 					}
 					else {
@@ -88,16 +96,18 @@ app.post('/', (req, res)=>{
 									if(compareresult){
 										mySession = req.session;
 										mySession.userName = req.body.emailInput;
-										
+										mySession.userId = result[0].id;
 										notice = mySession.userName + ' on sisse loginud!';
 										console.log(notice);
 										
 										res.render('index', {notice: notice});
+										conn.release();
 									}
 									else {
 										notice = 'Kasutajatunnus või parool oli vigane!';
 										console.log(notice);
 										res.render('index', {notice: notice});
+										conn.release();
 									}
 								}
 							});
@@ -107,6 +117,7 @@ app.post('/', (req, res)=>{
 							notice = 'Kasutajatunnus või parool oli vigane!';
 							console.log(notice);
 							res.render('index', {notice: notice});
+							conn.release();
 						}
 						
 					}
@@ -275,7 +286,7 @@ app.post('/eestifilm/addfilmperson', (req, res)=>{
 	});
 });
 
-app.get('/news', (req, res)=> {
+/* app.get('/news', (req, res)=> {
 	res.render('news');
 });
 
@@ -331,9 +342,10 @@ app.get('/news/read/:id/:lang', (req, res)=> {
 	console.log(req.params);
 	console.log(req.query);
 	res.send('Tahame uudist, mille id on: ' + req.params.id);
-});
+}); */
 
 app.get('/photoupload', checkLogin, (req, res)=> {
+	//console.log('Sessiooni userid: ' + req.session.userId);
 	res.render('photoupload');
 });
 
@@ -352,7 +364,7 @@ app.post('/photoupload', upload.single('photoInput'), (req, res)=>{
 	
 	//foto andmed andmetabelisse
 	let sql = 'INSERT INTO vpgallery (filename, originalname, alttext, privacy, userid) VALUES(?,?,?,?,?)';
-	const userid = 1;
+	//const userid = 1;
 	
 	//andmebaasi ühendus pool'i kaudu
 	pool.getConnection((err, conn)=>{
@@ -361,7 +373,7 @@ app.post('/photoupload', upload.single('photoInput'), (req, res)=>{
 		}
 		else {
 			//andmebaasi osa
-			conn.execute(sql, [fileName, req.file.originalname, req.body.altInput, req.body.privacyInput, userid], (err, result)=>{
+			conn.execute(sql, [fileName, req.file.originalname, req.body.altInput, req.body.privacyInput, req.session.userId], (err, result)=>{
 				if(err) {
 					throw err;
 					notice = 'Foto andmete salvestamine ebaõnnestus!';
@@ -381,8 +393,12 @@ app.post('/photoupload', upload.single('photoInput'), (req, res)=>{
 
 app.get('/photogallery', (req, res)=> {
 	let photoList = [];
-	let sql = 'SELECT id,filename,alttext FROM vpgallery WHERE privacy > 1 AND deleted IS NULL ORDER BY id DESC';
-	
+	let privacy = 3;
+	if(req.session.userId){
+		privacy = 2;
+	}
+	let sql = 'SELECT id,filename,alttext FROM vpgallery WHERE privacy >= ? AND deleted IS NULL ORDER BY id DESC';
+	//if(req.session.userId)
 	//andmebaasi ühendus pool'i kaudu
 	pool.getConnection((err, conn)=>{
 		if(err){
@@ -390,7 +406,7 @@ app.get('/photogallery', (req, res)=> {
 		}
 		else {
 			//andmebaasi osa
-			conn.execute(sql, (err,result)=>{
+			conn.execute(sql, [privacy],(err,result)=>{
 				if (err){
 					throw err;
 					res.render('photogallery', {photoList : photoList});
@@ -398,7 +414,7 @@ app.get('/photogallery', (req, res)=> {
 				}
 				else {
 					photoList = result;
-					console.log(result);
+					//console.log(result);
 					res.render('photogallery', {photoList : photoList});
 					conn.release();
 				}
